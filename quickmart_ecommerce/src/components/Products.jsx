@@ -6,9 +6,9 @@ import { useEffect } from "react";
 
 const Products = () => {
 
-    const isLoading = false;
-
-    const errorMessage = "";
+    const { isLoading, errorMessage } = useSelector(
+        (state) => state.errors
+    );
 
     const {products} = useSelector(
         (state) => state.products
@@ -20,7 +20,7 @@ const Products = () => {
     },[dispatch]);
 
 
-    
+
 
     return (
         <div className="lg:px-14 sm:px-8 px-4 py-14 2xl:wl-[90%] 2xl:mx-auto">
