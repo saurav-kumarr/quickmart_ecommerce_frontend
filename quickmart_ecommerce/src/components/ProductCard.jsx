@@ -13,7 +13,7 @@ const ProductCard = ({
     specialPrice
 }) => {
     const [openProductViewModal, setOpenProductViewModal] = useState(false)
-    const btnLoader = false;
+    const btnLoader = "false";
     const [selectedViewProduct, setSelectedViewProduct ] = useState("");
     const isAvailable = quantity && Number(quantity) > 0;
 
