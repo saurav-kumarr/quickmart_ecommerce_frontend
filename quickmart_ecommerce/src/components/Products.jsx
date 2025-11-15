@@ -5,6 +5,9 @@ import { fetchProducts } from "../store/actions";
 import { useEffect } from "react";
 import Filter from "./Filter";
 
+// 1. Make sure url is updated with filter values
+// 2. Use this filter values for getting data from backend
+
 const Products = () => {
 
     const { isLoading, errorMessage } = useSelector(
