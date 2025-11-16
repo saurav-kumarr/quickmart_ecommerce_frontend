@@ -1,9 +1,10 @@
 import { FaExclamationTriangle } from "react-icons/fa";
 import ProductCard from "./ProductCard";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../store/actions";
+import { fetchCategories } from "../store/actions";
 import { useEffect } from "react";
 import Filter from "./Filter";
+import useProductFilter from "./useProductFilter";
 
 // 1. Make sure url is updated with filter values
 // 2. Use this filter values for getting data from backend
@@ -14,13 +15,15 @@ const Products = () => {
         (state) => state.errors
     );
 
-    const {products} = useSelector(
+    const {products, categories} = useSelector(
         (state) => state.products
     )
     const dispatch = useDispatch();
 
+    useProductFilter();
+
     useEffect(() => {
-        dispatch(fetchProducts());
+        dispatch(fetchCategories());
     },[dispatch]);
 
 
@@ -28,7 +31,7 @@ const Products = () => {
 
     return (
         <div className="lg:px-14 sm:px-8 px-4 py-14 2xl:wl-[90%] 2xl:mx-auto">
-            <Filter />
+            <Filter categories={categories ? categories : []}/>
             {isLoading ? (
                 <p>It is loading...</p>
             ) : errorMessage ? (
