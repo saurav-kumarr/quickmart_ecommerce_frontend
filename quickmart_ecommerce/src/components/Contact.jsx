@@ -1,4 +1,4 @@
-import { FaEnvelope, FaMapMarkedAlt, FaPhone, FaPhoneAlt } from "react-icons/fa";
+import { FaEnvelope, FaMapMarkedAlt, FaPhoneAlt } from "react-icons/fa";
 
 const Contact = () => {
     return(
@@ -61,7 +61,7 @@ const Contact = () => {
                     </div>
                 </div>
             </div>
-            Contact Us
+            <span className="italic font-bold">Contact Us</span>
         </div>
     );
 }
