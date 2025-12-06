@@ -2,6 +2,9 @@ import { useState } from "react";
 import { MdOutlinePermContactCalendar } from "react-icons/md";
 import { HiOutlineTrash } from "react-icons/hi";
 import SetQuantity from "./SetQuantity";
+import { useDispatch } from "react-redux";
+import { increaseCartQuantity } from "../../store/actions";
+import toast from "react-hot-toast";
 
 const ItemContent = ({
     productId,
@@ -16,6 +19,16 @@ const ItemContent = ({
 }) => {
 
         const [currentQuantity, setCurrentQuantity] = useState(quantity);
+
+        const dispatch = useDispatch();
+        const handleQtyIncrease = (cartItems) => {
+            dispatch(increaseCartQuantity(
+                cartItems,
+                toast,
+                currentQuantity,
+                setCurrentQuantity
+            ));
+        };
 
     return (
         
@@ -48,7 +61,17 @@ const ItemContent = ({
                 <SetQuantity 
                 quantity={currentQuantity}
                 cardCounter={true}
-                handleQtyIncrease={() => {}}
+                handleQtyIncrease={() => handleQtyIncrease(
+                    {
+                    image,
+                    productName,
+                    description,
+                    specialPrice,
+                    price,
+                    productId,
+                    quantity
+                    }
+                )}
                 handleQtyDecrease={() => {}}/>
             </div>
             <div className="justify-self-center lg:text-[17px] text-sm text-slate-600 font-semibold">
