@@ -4,6 +4,7 @@ import { fetchProducts } from "../../store/actions";
 import ProductCard from "../shared/ProductCard";
 import { useEffect } from "react";
 import Loader from "../shared/Loader";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 const Home = () => {
     const dispatch = useDispatch();
