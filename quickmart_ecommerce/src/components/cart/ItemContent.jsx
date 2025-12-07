@@ -3,7 +3,7 @@ import { MdOutlinePermContactCalendar } from "react-icons/md";
 import { HiOutlineTrash } from "react-icons/hi";
 import SetQuantity from "./SetQuantity";
 import { useDispatch } from "react-redux";
-import { decreaseCartQuantity, increaseCartQuantity } from "../../store/actions/index.js";
+import { decreaseCartQuantity, increaseCartQuantity, removeFromCart } from "../../store/actions/index.js";
 import toast from "react-hot-toast";
 
 const ItemContent = ({
@@ -38,6 +38,10 @@ const ItemContent = ({
             }
         };
 
+        const removeItemFromCart = (cartItems) => {
+            dispatch(removeFromCart(cartItems, toast));
+        };
+
     return (
         
         <div className="grid md:grid-cols-5 grid-cols-4 md:text-md text-sm gap-4 
@@ -55,7 +59,17 @@ const ItemContent = ({
 
                 <div className="flex items-start gap-5 mt-3">
                     <button
-                        onClick={() => {}}
+                        onClick={() => removeItemFromCart(
+                            {
+                    image,
+                    productName,
+                    description,
+                    specialPrice,
+                    price,
+                    productId,
+                    quantity
+                    }
+                        )}
                         className="flex items-center font-semibold space-x-2 px-4 py-1 text-xs border border-rose-600 text-rose-600 rounded-md hover:bg-red-50 transition-colrs duration-200">
                         <HiOutlineTrash size={16} className="text-rose-600 " />
                         Remove
