@@ -10,6 +10,7 @@ const Navbar = () => {
     const path = useLocation().pathname;
     const [navbarOpen, setNavbaropen] = useState(false);
     const { cart } = useSelector((state) => state.carts);
+    const { user } = useSelector((state) => state.auth);
 
     return (
         <div className="h-[70px] bg-custom-gradient text-white z-50 flex items-center sticky top-0">
@@ -71,6 +72,13 @@ const Navbar = () => {
                        </Badge>
                     </Link>
                 </li>
+
+                {(user && user.id) ? (
+                    <li className="font-medium transition-all duration-150">
+                        <p>Welcome</p>
+                    </li>
+                ) : (
+
                 <li className="font-medium transition-all duration-150">
                     <Link className="flex items-center space-x-2 px-4 py-1.5
                     bg-linear-to-r from-purple-600 to-red-500 text-white font-semibold rounded-md shadow-lg hover:from-prurpose-500
@@ -80,6 +88,9 @@ const Navbar = () => {
                        <span>Login</span>
                     </Link>
                 </li>
+                )}
+
+
             </ul>
             <button onClick={() => setNavbaropen(!navbarOpen)}
                 className="sm:hidden flex items-center sm:mt-0 mt-2">
