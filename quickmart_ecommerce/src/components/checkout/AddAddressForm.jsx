@@ -4,11 +4,13 @@ import { useForm } from 'react-hook-form';
 import { AiOutlineLogin } from 'react-icons/ai';
 import { FaAddressCard } from 'react-icons/fa';
 import Spinners from "../shared/Spinners";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { addUpdateUserAddress } from '../../store/actions';
 
-const AddAddressForm = () => {
-        
+const AddAddressForm = ({address, setOpenAddressModal}) => {
+
+    const dispatch = useDispatch();    
     const { btnLoader } = useSelector((state) => state.errors);
        const {
             register,
@@ -20,8 +22,13 @@ const AddAddressForm = () => {
         });
 
         const onSaveAddressHandler = async (data) => {
-        console.log("Login Click");
         
+        dispatch(addUpdateUserAddress(
+            data,
+            toast,
+            address?.addressId,
+            setOpenAddressModal
+        ))
     };
 
   return (
@@ -100,7 +107,7 @@ const AddAddressForm = () => {
                 </div>
                 <button 
                   disabled={btnLoader}
-                  className="text-white bg-customBlue px-4 py-2 rounded-md mt-4"
+                  className="text-white bg-custom-blue px-4 py-2 rounded-md mt-4"
                   type="submit">
                     {btnLoader ? (
                         <>
