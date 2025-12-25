@@ -1,5 +1,4 @@
 import api from "../../api/api.js"
-import toast from "react-hot-toast";
 
 export const fetchProducts = (queryString) => async (dispatch) => {
     try {
@@ -163,7 +162,8 @@ export const addUpdateUserAddress = (sendData, toast, addressId, setOpenAddressM
     const { data } = await api.post("/addresses", sendData);
     
     toast.success("Address saved Successfully");
-    navigate("/login");
+    dispatch({type:"IS_SUCCESS"});
+    //navigate("/login");
 } catch (error) {
     console.log(error);
     toast.error(error?.response?.data?.message || "Internal Server Error");

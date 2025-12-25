@@ -7,6 +7,7 @@ import Spinners from "../shared/Spinners";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addUpdateUserAddress } from '../../store/actions';
+import toast from 'react-hot-toast';
 
 const AddAddressForm = ({address, setOpenAddressModal}) => {
 
@@ -45,7 +46,7 @@ const AddAddressForm = ({address, setOpenAddressModal}) => {
                     <InputField 
                         label="Building Name"
                         required
-                        id="building"
+                        id="buildingName"
                         type="text"
                         message="*Building name is required"
                         placeholder="Enter Building Name"

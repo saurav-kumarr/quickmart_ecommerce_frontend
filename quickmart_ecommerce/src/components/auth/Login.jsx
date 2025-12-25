@@ -22,7 +22,7 @@ const LogIn = () => {
     });
 
     const logingHandler = async (data) => {
-        console.log("Login Click");
+        //console.log("Login Click");
         dispatch(authenticateSignInUser(data, toast, reset, navigate, setLoader))
     };
 
