@@ -227,4 +227,11 @@ export const selectUserCheckoutAddress = (address) => {
         type: "SELECT_CHECKOUT_ADDRESS",
         payload: address,
     }
-}
+};
+
+export const addPaymentMethod = (method) => {
+    return {
+        type: "ADD_PAYMENT_METHOD",
+        payload: method,
+    }
+};

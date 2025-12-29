@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserAddresses } from '../../store/actions';
 import toast from 'react-hot-toast';
 import SkeletonCustom from '../shared/Skeleton';
+import ErrorPage from '../shared/ErrorPage';
+import PaymentMethod from './PaymentMethod';
 
 const Checkout = () => {
 
@@ -65,6 +67,7 @@ const Checkout = () => {
         ) : (
             <div className='mt-5 '>
             {activeStep === 0 && <AddressInfo address = {address}/>}
+            {activeStep === 1 && <PaymentMethod />}
         </div>
         )}
         
@@ -101,6 +104,7 @@ const Checkout = () => {
             )}
         </div>
         
+        {errorMessage && <ErrorPage message={errorMessage} />}
 
     </div>
   );
