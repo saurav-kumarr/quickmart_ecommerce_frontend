@@ -36,7 +36,8 @@ export const fetchCategories = () => async (dispatch) => {
             totalPages: data.totalPages,
             lastPage: data.lastPage,
         });
-        dispatch({ type: "IS_ERROR" });
+     //change ->   dispatch({ type: "IS_ERROR" });
+     dispatch({ type: "IS_SUCCESS" });
     } catch (error) {
         console.log(error);
         dispatch({ type: "IS_ERROR",
@@ -239,9 +240,9 @@ export const addPaymentMethod = (method) => {
 export const createUserCart = (sendCartItems) => async (dispatch, getState) => {
     try {
         dispatch({ type: "IS_FETCHING" });
-        await api.post('/cart/create', sendCartItems);
+        await api.post("/cart/create", sendCartItems);
         await dispatch(getUserCart());
-        
+        dispatch({ type: "IS_SUCCESS" });  // Change (remove)
     } catch (error) {
         console.log(error);
         dispatch({ type: "IS_ERROR",
@@ -259,7 +260,7 @@ export const getUserCart = () => async (dispatch, getState) => {
             type: "GET_USER_CART_PRODUCTS",
             payload: data.products,
             totalPrice: data.totalPrice,
-            cartid: data.cartId
+            cartId: data.cartId
         })
         localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
         dispatch({ type: "IS_SUCCESS" });
