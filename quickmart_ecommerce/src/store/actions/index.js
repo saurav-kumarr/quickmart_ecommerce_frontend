@@ -294,10 +294,11 @@ export const stripePaymentConfirmation
    = (sendData, setErrorMessage, setLoading, toast) => async (dispatch, getState) => {
 try {
     
-    const { response } = await api.post("/order/users/payments/CARD", {
+    const  response  = await api.post("/order/users/payments/online", 
         sendData
-    });
+    );
     if(response.data){
+        localStorage.removeItem("CHECKOUT_ADDRESS");
         localStorage.removeItem("cartItems");
         localStorage.removeItem("client-secret");
         dispatch({type: "REMOVE_CLIENT_SECRET_ADDRESS"});

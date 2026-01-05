@@ -22,6 +22,8 @@ const PaymentConfirmation = () => {
      ?  JSON.parse(localStorage.getItem("CHECKOUT_ADDRESS"))
      : [];
 
+   //  const {selectUserCheckoutAddress} = useSelector((state) => state.auth);
+
     useEffect(() => {
         if(paymentIntent &&
             clientSecret &&
@@ -29,7 +31,7 @@ const PaymentConfirmation = () => {
             cart && 
             cart?.length > 0
         ) {
-            console.log(selectUserCheckoutAddress);
+            //console.log(selectUserCheckoutAddress);
             const sendData = {
                 addressId: selectUserCheckoutAddress.addressId,
                 pgName: "Stripe",
@@ -37,8 +39,8 @@ const PaymentConfirmation = () => {
                 pgStatus: "succeeded",
                 pgResponseMessage: "Payment successful"
             };
-            console.log(selectUserCheckoutAddress);
-            console.log(sendData);
+            //console.log(selectUserCheckoutAddress);
+            //console.log(sendData);
             dispatch(stripePaymentConfirmation(sendData, setErrorMessage, setLoading, toast));
         }
     }, [paymentIntent, clientSecret, redirectStatus, cart]);
