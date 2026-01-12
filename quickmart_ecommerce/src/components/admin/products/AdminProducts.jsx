@@ -5,11 +5,16 @@ import Loader from '../../shared/Loader';
 import { FaBoxOpen } from 'react-icons/fa';
 import { DataGrid } from '@mui/x-data-grid';
 import { adminProductTableColumn } from '../../helper/tableColumn';
+import { useDashboardProductFilter } from '../../../hooks/useProductFilter';
 const AdminProducts = () => {
 
-  const products = [{ "productName": "Robot3", "image": "http://localhost:8080/images/4cc3c95e-7d34-4e43-8e4d-c933bcc2b361.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 4 }, { "productName": "Robot2", "image": "http://localhost:8080/images/1aecfd5a-2eb8-42fc-bf19-2ef298c46ec7.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 3 }];
-  const pagination = {pageNumber: 0, pageSize: 10, totalElements: 2, totalPages: 1, lastPage: true};
+  // const products = [{ "productName": "Robot3", "image": "http://localhost:8080/images/4cc3c95e-7d34-4e43-8e4d-c933bcc2b361.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 4 }, { "productName": "Robot2", "image": "http://localhost:8080/images/1aecfd5a-2eb8-42fc-bf19-2ef298c46ec7.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 3 }];
+  // const pagination = {pageNumber: 0, pageSize: 10, totalElements: 2, totalPages: 1, lastPage: true};
+  
+  const {products,pagination} = useSelector((state) => state.products);
   const {isLoading, errorMessage} = useSelector((state) => state.errors);
+
+  useDashboardProductFilter();
   
   const tableRecords = products?.map((item) => {
   return {
