@@ -6,6 +6,8 @@ import { FaBoxOpen } from 'react-icons/fa';
 import { DataGrid } from '@mui/x-data-grid';
 import { adminProductTableColumn } from '../../helper/tableColumn';
 import { useDashboardProductFilter } from '../../../hooks/useProductFilter';
+import Modal from '../../shared/Modal';
+import AddProductForm from './AddProductForm';
 const AdminProducts = () => {
 
   // const products = [{ "productName": "Robot3", "image": "http://localhost:8080/images/4cc3c95e-7d34-4e43-8e4d-c933bcc2b361.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 4 }, { "productName": "Robot2", "image": "http://localhost:8080/images/1aecfd5a-2eb8-42fc-bf19-2ef298c46ec7.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 3 }];
@@ -13,6 +15,8 @@ const AdminProducts = () => {
   
   const {products,pagination} = useSelector((state) => state.products);
   const {isLoading, errorMessage} = useSelector((state) => state.errors);
+  const [selectedProduct, setSelectedProduct] = useState('');
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   useDashboardProductFilter();
   
@@ -34,7 +38,8 @@ const [currentPage, setCurrentPage] = useState(
   );
 
   const handleEdit = (product) => {
-
+    setSelectedProduct(product);
+    setOpenUpdateModal(true);
   };
   const handleDelete = (product) => {
 
@@ -111,6 +116,16 @@ const [currentPage, setCurrentPage] = useState(
         )}
         </>
       )}
+
+      <Modal
+        open={openUpdateModal}
+        setOpen={setOpenUpdateModal}
+        title="Update Product">
+        <AddProductForm 
+         setOpen={setOpenUpdateModal}
+         product={selectedProduct}
+         update={openUpdateModal}/>
+      </Modal>
 
     </div>
   )
