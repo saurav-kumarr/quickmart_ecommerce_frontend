@@ -2,14 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import InputField from '../../shared/InputField'
 import Button from '@mui/material/Button';
-import { useDispatch } from 'react-redux';
-import { updateProductFromDashboard } from '../../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategories, updateProductFromDashboard } from '../../../store/actions';
 import Spinners from '../../shared/Spinners';
 import toast from 'react-hot-toast';
+import SelectTextField from '../../shared/SelectTextField';
+import SkeletonCustom from '../../shared/Skeleton';
+import ErrorPage from '../../shared/ErrorPage';
+
 
 const AddProductForm = ({setOpen, product, update=false}) => {
 
     const [loader, setLoader] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState();
+    const  {categories}  = useSelector((state) => state.products);
+    const  {categoryLoader, errorMessage}  = useSelector((state) => state.errors);
+    //console.log(categories)
     const dispatch = useDispatch();
     const {
         register,
@@ -24,6 +32,7 @@ const AddProductForm = ({setOpen, product, update=false}) => {
     const saveProductHandler = (data) => {
         if(!update){
             // create new product logic
+            
         } else {
             const sendData = {
                 ...data,
@@ -44,6 +53,21 @@ const AddProductForm = ({setOpen, product, update=false}) => {
         }
     },[update,product])
 
+    useEffect(() => {
+        if(!update) {
+            dispatch(fetchCategories());
+        }
+    }, [dispatch, update]);
+
+    useEffect(() => {
+        if(!categoryLoader && categories) {
+            setSelectedCategory(categories[0]);
+        }
+    }, [categories, categoryLoader]);
+
+    if(categoryLoader) return <SkeletonCustom />
+    if(errorMessage) return <ErrorPage message={errorMessage} />
+
   return (
     <div className='py-5 relative h-full'>
         <form className='space-y-4'
@@ -55,9 +79,19 @@ const AddProductForm = ({setOpen, product, update=false}) => {
                     id="productName"
                     type="text"
                     message="This field is required*"
+                    placeholder="Product Name"
                     register={register}
                     errors={errors}
                 />
+
+                {!update && (
+                    <SelectTextField 
+                      label="Select Categories"
+                      select={selectedCategory}
+                      setSelect={setSelectedCategory}
+                      lists={categories}
+                      />
+                )}
                 
             </div>
             <div className='flex md:flex-row flex-col gap-4 w-full'>
@@ -67,7 +101,7 @@ const AddProductForm = ({setOpen, product, update=false}) => {
                     id="price"
                     type="number"
                     message="This field is required*"
-                    placeholder="Product Name"
+                    placeholder="Product Price"
                     register={register}
                     errors={errors}
                 />

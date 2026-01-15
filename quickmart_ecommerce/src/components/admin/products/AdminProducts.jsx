@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {MdAddShoppingCart} from 'react-icons/md';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../shared/Loader';
 import { FaBoxOpen } from 'react-icons/fa';
 import { DataGrid } from '@mui/x-data-grid';
@@ -15,8 +15,14 @@ const AdminProducts = () => {
   
   const {products,pagination} = useSelector((state) => state.products);
   const {isLoading, errorMessage} = useSelector((state) => state.errors);
+  const [currentPage, setCurrentPage] = useState(
+    pagination?.pageNumber + 1 || 1
+  );
+
+ // const dispatch = useDispatch();
   const [selectedProduct, setSelectedProduct] = useState('');
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
 
   useDashboardProductFilter();
   
@@ -33,9 +39,7 @@ const AdminProducts = () => {
   }
 });
 
-const [currentPage, setCurrentPage] = useState(
-    pagination?.pageNumber + 1 || 1
-  );
+
 
   const handleEdit = (product) => {
     setSelectedProduct(product);
@@ -60,6 +64,7 @@ const [currentPage, setCurrentPage] = useState(
     <div>
       <div className='pt-6 pb-10 flex justify-end'>
         <button
+          onClick={() => setOpenAddModal(true)}
            className='bg-custom-blue hover:bg-blue-800 text-white font-semibold py-2 px-4 flex items-center gap-2 rounded-md shadow-md transition-colors hover:text-slate-300 duration-300'>
           <MdAddShoppingCart className='text-xl'/>
           Add Product
@@ -118,11 +123,11 @@ const [currentPage, setCurrentPage] = useState(
       )}
 
       <Modal
-        open={openUpdateModal}
-        setOpen={setOpenUpdateModal}
-        title="Update Product">
+        open={openUpdateModal || openAddModal}
+        setOpen={openUpdateModal ? setOpenUpdateModal : setOpenAddModal}
+        title={openUpdateModal ? "Update Product" : "Add Product"}>
         <AddProductForm 
-         setOpen={setOpenUpdateModal}
+         setOpen={openUpdateModal ? setOpenUpdateModal : setOpenAddModal}
          product={selectedProduct}
          update={openUpdateModal}/>
       </Modal>
