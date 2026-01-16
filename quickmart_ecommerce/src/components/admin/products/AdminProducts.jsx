@@ -11,6 +11,7 @@ import AddProductForm from './AddProductForm';
 import DeleteModal from '../../shared/DeleteModal';
 import { deleteProduct } from '../../../store/actions';
 import toast from 'react-hot-toast';
+import ImageUploadForm from './ImageUploadForm';
 const AdminProducts = () => {
 
   // const products = [{ "productName": "Robot3", "image": "http://localhost:8080/images/4cc3c95e-7d34-4e43-8e4d-c933bcc2b361.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 4 }, { "productName": "Robot2", "image": "http://localhost:8080/images/1aecfd5a-2eb8-42fc-bf19-2ef298c46ec7.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 3 }];
@@ -27,6 +28,7 @@ const AdminProducts = () => {
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openImageUploadModal, setOpenImageUploadModal] = useState(false);
   const [loader, setLoader] = useState(false);
 
   useDashboardProductFilter();
@@ -53,10 +55,11 @@ const AdminProducts = () => {
   const handleDelete = (product) => {
       setSelectedProduct(product);
       setOpenDeleteModal(true);
-      console.log(`handleDelete ${product.id}`)
+      //console.log(`handleDelete ${product.id}`)
   };
   const handleImageUpload = (product) => {
-
+         setSelectedProduct(product);
+      setOpenImageUploadModal(true);
   };
   const handleProductView = (product) => {
 
@@ -144,6 +147,17 @@ const AdminProducts = () => {
          product={selectedProduct}
          update={openUpdateModal}/>
       </Modal>
+
+      <Modal
+        open={openImageUploadModal}
+        setOpen={setOpenImageUploadModal}
+        title="Add Product Image">
+        <ImageUploadForm
+         setOpen={setOpenImageUploadModal}
+         product={selectedProduct}
+         />
+      </Modal>
+
       <DeleteModal
         open={openDeleteModal}
         setOpen={setOpenDeleteModal}
