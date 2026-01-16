@@ -8,6 +8,9 @@ import { adminProductTableColumn } from '../../helper/tableColumn';
 import { useDashboardProductFilter } from '../../../hooks/useProductFilter';
 import Modal from '../../shared/Modal';
 import AddProductForm from './AddProductForm';
+import DeleteModal from '../../shared/DeleteModal';
+import { deleteProduct } from '../../../store/actions';
+import toast from 'react-hot-toast';
 const AdminProducts = () => {
 
   // const products = [{ "productName": "Robot3", "image": "http://localhost:8080/images/4cc3c95e-7d34-4e43-8e4d-c933bcc2b361.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 4 }, { "productName": "Robot2", "image": "http://localhost:8080/images/1aecfd5a-2eb8-42fc-bf19-2ef298c46ec7.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 3 }];
@@ -19,10 +22,12 @@ const AdminProducts = () => {
     pagination?.pageNumber + 1 || 1
   );
 
- // const dispatch = useDispatch();
+   const dispatch = useDispatch();
   const [selectedProduct, setSelectedProduct] = useState('');
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   useDashboardProductFilter();
   
@@ -46,7 +51,9 @@ const AdminProducts = () => {
     setOpenUpdateModal(true);
   };
   const handleDelete = (product) => {
-
+      setSelectedProduct(product);
+      setOpenDeleteModal(true);
+      console.log(`handleDelete ${product.id}`)
   };
   const handleImageUpload = (product) => {
 
@@ -57,6 +64,12 @@ const AdminProducts = () => {
   const handlePaginationChange = (paginationModel) => {
 
   };
+
+  const onDeleteHandler = () => {
+    console.log(`onDeleteHandler ${selectedProduct.id}`);
+    
+    dispatch(deleteProduct(setLoader, selectedProduct?.id, toast, setOpenDeleteModal));
+  }
 
   const emptyProduct =  !products || products?.length === 0;
   
@@ -131,6 +144,13 @@ const AdminProducts = () => {
          product={selectedProduct}
          update={openUpdateModal}/>
       </Modal>
+      <DeleteModal
+        open={openDeleteModal}
+        setOpen={setOpenDeleteModal}
+        loader={loader}
+        title="Are you sure you want to delete?"
+          onDeleteHandler={onDeleteHandler}>
+      </DeleteModal>
 
     </div>
   )
