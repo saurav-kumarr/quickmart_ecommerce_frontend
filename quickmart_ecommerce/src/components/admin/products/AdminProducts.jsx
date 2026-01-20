@@ -13,6 +13,7 @@ import { deleteProduct } from '../../../store/actions';
 import toast from 'react-hot-toast';
 import ImageUploadForm from './ImageUploadForm';
 import ProductViewModal from '../../shared/ProductViewModal';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 const AdminProducts = () => {
 
   // const products = [{ "productName": "Robot3", "image": "http://localhost:8080/images/4cc3c95e-7d34-4e43-8e4d-c933bcc2b361.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 4 }, { "productName": "Robot2", "image": "http://localhost:8080/images/1aecfd5a-2eb8-42fc-bf19-2ef298c46ec7.png", "description": "Its an automatic car based on voice recognition & equiped with machine gun.", "quantity": 15, "price": 400.0, "discount": 0.0, "specialPrice": 400.0, "productId": 3 }];
@@ -32,6 +33,11 @@ const AdminProducts = () => {
   const [openProductViewModal, setOpenProductViewModal] = useState(false);
   const [openImageUploadModal, setOpenImageUploadModal] = useState(false);
   const [loader, setLoader] = useState(false);
+
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const params = new URLSearchParams(searchParams);
+  const pathname = useLocation().pathname;
 
   useDashboardProductFilter();
   
@@ -69,7 +75,10 @@ const AdminProducts = () => {
     setOpenProductViewModal(true);
   };
   const handlePaginationChange = (paginationModel) => {
-
+      const page = paginationModel.page + 1;
+  setCurrentPage(page);
+  params.set("page", page.toString());
+  navigate(`${pathname}?${params}`)
   };
 
   const onDeleteHandler = () => {
@@ -129,6 +138,7 @@ const AdminProducts = () => {
                     }}
                     onPaginationModelChange={handlePaginationChange}
                     disableRowSelectionOnClick
+                    disableColumnResize
                     pageSizeOptions={[pagination?.pageSize || 10]}
                     pagination
                     paginationOptions={{
