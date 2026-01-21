@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import api from "../../api/api.js"
 
 export const fetchProducts = (queryString) => async (dispatch) => {
@@ -406,6 +407,25 @@ export const updateProductFromDashboard =
         toast.error(error?.response?.data?.description || "Product update failed");
     }
 }
+
+export const addNewProductFromDashboard = 
+  (sendData, toast, reset, setLoader, setOpen) => async(dispatch, getState) => {
+        try {
+            setLoader(true);
+            await api.post(`/admin/categories/${sendData.categoryId}/product`,
+                sendData
+            );
+            toast.success("Product created successfully");
+            reset();
+            setOpen(false);
+            await dispatch(dashboardProductsAction());
+        } catch (error) {
+            console.error(error);
+            toast.error(error?.response?.data?.description || "Product creation failed");
+        } finally{
+            setLoader(false);
+        }
+  }
 
 export const deleteProduct =
  (setLoader, productId, toast, setOpenDeleteModal) => async (dispatch, getState) => {

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import InputField from '../../shared/InputField'
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCategories, updateProductFromDashboard } from '../../../store/actions';
+import { addNewProductFromDashboard, fetchCategories, updateProductFromDashboard } from '../../../store/actions';
 import Spinners from '../../shared/Spinners';
 import toast from 'react-hot-toast';
 import SelectTextField from '../../shared/SelectTextField';
@@ -32,7 +32,13 @@ const AddProductForm = ({setOpen, product, update=false}) => {
     const saveProductHandler = (data) => {
         if(!update){
             // create new product logic
-            
+            const sendData = {
+                ...data,
+                categoryId: selectedCategory.categoryId,
+            };
+            dispatch(addNewProductFromDashboard(
+                sendData, toast, reset, setLoader, setOpen
+            ))
         } else {
             const sendData = {
                 ...data,
@@ -149,6 +155,7 @@ const AddProductForm = ({setOpen, product, update=false}) => {
             className={`px-4 py-2 w-full border outline-none bg-transparent text-slate-800 rounded-md ${
                 errors["description"]?.message ? "border-red-500" : "border-slate-700"
             }`}
+            maxLength={255}
             {...register("description", {
                 required: {value: true, message:"Description is required"},
             })}/>
@@ -180,7 +187,7 @@ const AddProductForm = ({setOpen, product, update=false}) => {
                         <Spinners /> Loading...
                     </div>
                 ) : (
-                    "Update"
+                    "Save"
                 )}
             </Button>
         </div>
