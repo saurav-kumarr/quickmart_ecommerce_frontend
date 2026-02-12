@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { getOrdersForDashboard } from "../store/actions";
 
@@ -7,6 +7,9 @@ import { getOrdersForDashboard } from "../store/actions";
 const useOrderFilter = () => {
     const [searchParams] = useSearchParams();
     const dispatch = useDispatch();
+
+    const { user } = useSelector((state) => state.auth);
+    const isAdmin = user && user?.roles?.includes("ROLE_ADMIN");
 
     useEffect(() => {
         const params = new URLSearchParams();
@@ -21,7 +24,7 @@ const useOrderFilter = () => {
         const queryString = params.toString();
         console.log("QUERY STRING", queryString);
 
-        dispatch(getOrdersForDashboard(queryString));
+        dispatch(getOrdersForDashboard(queryString, isAdmin));
 
         
     },[dispatch, searchParams]);
