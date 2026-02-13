@@ -372,10 +372,11 @@ export const updateOrderStatusFromDashboard =
 };
 
 
-export const dashboardProductsAction = (queryString) => async (dispatch) => {
+export const dashboardProductsAction = (queryString, isAdmin) => async (dispatch) => {
     try {
         dispatch({ type: "IS_FETCHING" });
-        const {data} = await api.get(`/admin/products?${queryString}`);
+        const endpoint = isAdmin ? "/admin/products" : "/seller/products"; 
+        const {data} = await api.get(`${endpoint}?${queryString}`);
         //console.log(data)
         dispatch({
             type: "FETCH_PRODUCTS",
@@ -396,10 +397,11 @@ export const dashboardProductsAction = (queryString) => async (dispatch) => {
 };
 
 export const updateProductFromDashboard = 
-(sendData, toast, reset, setLoader, setOpen) => async (dispatch) => {
+(sendData, toast, reset, setLoader, setOpen, isAdmin) => async (dispatch) => {
     try {
         setLoader(true);
-        await api.put(`/admin/products/${sendData.id}`, sendData);
+        const endpoint = isAdmin ? "/admin/products" : "/seller/products";
+        await api.put(`${endpoint}${sendData.id}`, sendData);
         toast.success("Product update successful");
         reset();
         setLoader(false);
@@ -411,10 +413,12 @@ export const updateProductFromDashboard =
 }
 
 export const addNewProductFromDashboard = 
-  (sendData, toast, reset, setLoader, setOpen) => async(dispatch, getState) => {
+  (sendData, toast, reset, setLoader, setOpen, isAdmin) => async(dispatch, getState) => {
         try {
             setLoader(true);
-            await api.post(`/admin/categories/${sendData.categoryId}/product`,
+
+            const endpoint = isAdmin ? "/admin/categories/" : "/seller/categories/";
+            await api.post(`${endpoint}${sendData.categoryId}/product`,
                 sendData
             );
             toast.success("Product created successfully");
@@ -430,10 +434,11 @@ export const addNewProductFromDashboard =
   }
 
 export const deleteProduct =
- (setLoader, productId, toast, setOpenDeleteModal) => async (dispatch, getState) => {
+ (setLoader, productId, toast, setOpenDeleteModal, isAdmin) => async (dispatch, getState) => {
     try {
         setLoader(true);
-        await api.delete(`/admin/products/${productId}`);
+        const endpoint = isAdmin ? "/admin/products" : "/seller/products";
+        await api.delete(`${endpoint}${productId}`);
         toast.success("Product deleted successfully");
         setLoader(false);
         setOpenDeleteModal(false);
@@ -447,10 +452,11 @@ export const deleteProduct =
 };
 
 export const updateProductImageFromDashboard = 
-(formData, productId, toast, setLoader, setOpen) => async (dispatch) => {
+(formData, productId, toast, setLoader, setOpen, isAdmin) => async (dispatch) => {
     try {
         setLoader(true);
-        await api.put(`/admin/products/${productId}/image`, formData);
+        const endpoint = isAdmin ? "/admin/products" : "/seller/products";
+        await api.put(`${endpoint}${productId}/image`, formData);
         toast.success("Image update successful");
         setLoader(false);
         setOpen(false);

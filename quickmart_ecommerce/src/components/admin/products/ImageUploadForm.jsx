@@ -12,6 +12,8 @@ const ImageUploadForm = ({ setOpen, product }) => {
     const [previewImage, setPreviewImage] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const dispatch = useDispatch();
+     const { user } = useSelector((state) => state.auth);
+    const isAdmin = user && user?.roles?.includes("ROLE_ADMIN");
     const onHandleImageChange = (e) => {
         const file = e.target.files[0];
         if(file && ["image/jpeg", "image/jpg", "image/png"].includes(file.type)){
@@ -37,7 +39,7 @@ const ImageUploadForm = ({ setOpen, product }) => {
 
         const formData = new FormData();
             formData.append("image",selectedFile);
-            dispatch(updateProductImageFromDashboard(formData, product.id, toast, setLoader, setOpen));
+            dispatch(updateProductImageFromDashboard(formData, product.id, toast, setLoader, setOpen, isAdmin));
     };
 
     const handleClearImage = () => {

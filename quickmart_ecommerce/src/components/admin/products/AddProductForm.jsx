@@ -17,6 +17,9 @@ const AddProductForm = ({setOpen, product, update=false}) => {
     const [selectedCategory, setSelectedCategory] = useState();
     const  {categories}  = useSelector((state) => state.products);
     const  {categoryLoader, errorMessage}  = useSelector((state) => state.errors);
+
+    const { user } = useSelector((state) => state.auth);
+    const isAdmin = user && user?.roles?.includes("ROLE_ADMIN");
     //console.log(categories)
     const dispatch = useDispatch();
     const {
@@ -37,14 +40,14 @@ const AddProductForm = ({setOpen, product, update=false}) => {
                 categoryId: selectedCategory.categoryId,
             };
             dispatch(addNewProductFromDashboard(
-                sendData, toast, reset, setLoader, setOpen
+                sendData, toast, reset, setLoader, setOpen, isAdmin
             ))
         } else {
             const sendData = {
                 ...data,
                 id: product.id,
             };
-            dispatch(updateProductFromDashboard(sendData,toast,reset,setLoader,setOpen));
+            dispatch(updateProductFromDashboard(sendData,toast,reset,setLoader,setOpen, isAdmin));
         }
     }
 
